@@ -143,7 +143,7 @@ Node *erase(Node *root,ll data)
 		root->right = temp->right;
 	}
 	
-	free(temp);
+	delete temp;
 	return root;
 	
 }
